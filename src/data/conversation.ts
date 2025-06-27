@@ -1,6 +1,6 @@
 export interface Dialogue {
   id: number;
-  role: 'xinbao' | 'Smart' | 'Guest1';
+  role: 'xinbao' | 'Smart' | 'xiaoyu';
   startTime: number;
   endTime: number;
   text: string;
@@ -23,7 +23,7 @@ export const conversation: Dialogue[] = [
   },
   {
     id: 3,
-    role: 'Guest1',
+    role: 'xiaoyu',
     startTime: 6.5,
     endTime: 10,
     text: '我最近就“裸辞”了，我觉得这是一个需要很大勇气的决定。',
@@ -37,7 +37,7 @@ export const conversation: Dialogue[] = [
   },
   {
     id: 5,
-    role: 'Guest1',
+    role: 'xiaoyu',
     startTime: 14.5,
     endTime: 19,
     text: '当然。最主要的原因还是工作压力太大，感觉自己的身心都达到了一个极限。',
@@ -58,7 +58,7 @@ export const conversation: Dialogue[] = [
   },
   {
     id: 8,
-    role: 'Guest1',
+    role: 'xiaoyu',
     startTime: 27.5,
     endTime: 31,
     text: '我打算先给自己放个假，好好调整一下状态，然后再去寻找更适合自己的工作。',

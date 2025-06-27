@@ -44,9 +44,10 @@ const togglePlay = () => {
 </script>
 
 <template>
-  <main class="w-full h-screen bg-gray-800 text-white">
+  <main class="w-full h-screen bg-gradient-to-br from-slate-800 to-primary/40 text-white relative overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(52,204,133,0.2),rgba(255,255,255,0))]"></div>
     <Stage :active-dialogue="activeDialogue" />
-    <div class="absolute top-4 left-4">
+    <div class="absolute top-4 left-4 z-10">
       <Button @click="togglePlay">
         {{ isPlaying ? 'Pause' : 'Play' }}
       </Button>

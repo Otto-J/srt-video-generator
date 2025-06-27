@@ -15,7 +15,7 @@ defineProps<{
       <Avatar role="Smart" :is-speaking="activeDialogue?.role === 'Smart'" />
     </div>
     <div class="flex">
-      <Avatar role="Guest1" :is-speaking="activeDialogue?.role === 'Guest1'" />
+      <Avatar role="xiaoyu" :is-speaking="activeDialogue?.role === 'xiaoyu'" />
     </div>
     <Subtitle v-if="activeDialogue" :text="activeDialogue.text" />
   </div>
