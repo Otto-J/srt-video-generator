@@ -16,7 +16,7 @@ const avatarUrl = computed(() => {
     // 将角色名转换为小写以匹配文件名
     return new URL(`/public/avatar/${props.role.toLowerCase()}.jpg`, import.meta.url).href
   } catch (e) {
-    console.error(`Avatar for role "${props.role}" not found.`)
+    console.error(`Avatar for role "${props.role}" not found.`, e)
     // 提供一个备用图片或返回空字符串
     return ''
   }

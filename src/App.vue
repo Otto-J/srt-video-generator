@@ -25,8 +25,6 @@ onMounted(async () => {
   conversationData.value = await conversation()
 })
 
-// conversationData.value = await conversation()
-
 const activeDialogue = computed<Dialogue | null>(() => {
   return (
     conversationData.value.find(
@@ -93,7 +91,7 @@ const play = () => {
 
   const animate = (time: number) => {
     currentTime.value = (time - startTime) / 1000
-    if (currentTime.value < conversation[conversation.length - 1].endTime) {
+    if (currentTime.value < conversationData.value[conversationData.value.length - 1].endTime) {
       animationFrameId = requestAnimationFrame(animate)
     } else {
       isPlaying.value = false
@@ -180,7 +178,10 @@ const togglePlay = () => {
       </div>
     </div>
     <div class="absolute top-4 left-4 z-10">
-      <Button @click="togglePlay">
+      <Button
+        class="bg-transparent hover:bg-red-400 text-transparent hover:text-white"
+        @click="togglePlay"
+      >
         {{ isPlaying ? 'Pause' : 'Play' }}
       </Button>
     </div>
