@@ -1,0 +1,25 @@
+{
+  "audio":"/public/audio/eva.mp3",
+  "srtWords":"eva",
+  "speakers":[
+    {
+      "type":"c2",
+      "name":"Xinbao"
+    },
+    {
+      "type":"c3",
+      "name":"Smart"
+    }
+  ],
+  "guest":[
+    {
+      "type":"c5",
+      "name":"Eva"
+    }
+  ],
+  "avatar":{
+    "Xinbao":"/public/avatar/xinbao.png",
+    "Smart":"/public/avatar/smart.png",
+    "Eva":"/public/avatar/eva.png"
+  }
+}
