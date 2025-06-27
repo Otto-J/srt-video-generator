@@ -4,6 +4,12 @@ import Stage from './components/Stage.vue';
 import { Button } from '@/components/ui/button';
 import { conversation, type Dialogue } from './data/conversation';
 
+// Extend the window interface for TypeScript
+interface CustomWindow extends Window {
+  onAnimationComplete?: () => void;
+}
+declare const window: CustomWindow;
+
 const isPlaying = ref(false);
 const currentTime = ref(0);
 let animationFrameId: number;
@@ -23,6 +29,10 @@ const play = () => {
     } else {
       isPlaying.value = false;
       currentTime.value = 0;
+      // Signal completion to Puppeteer
+      if (typeof window.onAnimationComplete === 'function') {
+        window.onAnimationComplete();
+      }
     }
   };
 

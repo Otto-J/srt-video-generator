@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
+    "render:video": "node --loader ts-node/esm scripts/render.ts",
     "lint": "eslint . --fix",
     "format": "prettier --write src/"
   },
@@ -32,9 +33,11 @@
     "npm-run-all2": "^8.0.4",
     "postcss": "^8.4.38",
     "prettier": "3.5.3",
+    "puppeteer": "^24.11.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^3.4.4",
     "tailwindcss-animate": "^1.0.7",
+    "ts-node": "^10.9.2",
     "typescript": "~5.8.0",
     "vite": "^7.0.0",
     "vue-tsc": "^2.2.10"
