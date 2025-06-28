@@ -14,7 +14,7 @@ const props = defineProps<{
 const avatarUrl = computed(() => {
   try {
     // 将角色名转换为小写以匹配文件名
-    return new URL(`/public/avatar/${props.role.toLowerCase()}.jpg`, import.meta.url).href
+    return `/avatar/${props.role.toLowerCase()}.jpg`
   } catch (e) {
     console.error(`Avatar for role "${props.role}" not found.`, e)
     // 提供一个备用图片或返回空字符串

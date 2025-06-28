@@ -36,7 +36,7 @@ const speakerMap: SpeakerMap = {
 
 // 生成 conversation
 export async function conversation(): Promise<Dialogue[]> {
-  const demo = /* @vite-ignore */ await import(`./${config.srtWords}.json`)
+  const demo = await import(/* @vite-ignore */ `./${config.srtWords}.json`)
   return (demo.default as DemoSpeaker[])
     .flatMap((item) => {
       const role = speakerMap[item.speaker]
