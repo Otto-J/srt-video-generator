@@ -15,6 +15,7 @@ const currentTime = ref(0)
 let animationFrameId: number
 
 const videoRef = ref<HTMLVideoElement | null>(null)
+const trackRef = ref<HTMLTrackElement | null>(null)
 const duration = ref(0)
 const isSeeking = ref(false)
 const seekTime = ref(0)
@@ -33,6 +34,36 @@ const activeDialogue = computed<Dialogue | null>(() => {
   )
 })
 
+// 生成 VTT 字符串
+function dialogueToVtt(data: Dialogue[]): string {
+  function formatTime(sec: number) {
+    const h = Math.floor(sec / 3600)
+    const m = Math.floor((sec % 3600) / 60)
+    const s = Math.floor(sec % 60)
+    const ms = Math.floor((sec % 1) * 1000)
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}.${String(ms).padStart(3, '0')}`
+  }
+  return (
+    'WEBVTT\n\n' +
+    data
+      .map((d) => `${formatTime(d.startTime)} --> ${formatTime(d.endTime)}\n${d.text}\n`)
+      .join('\n')
+  )
+}
+
+onMounted(async () => {
+  conversationData.value = await conversation()
+
+  const vttString = dialogueToVtt(conversationData.value)
+  const vttBlob = new Blob([vttString], { type: 'text/vtt' })
+  const vttUrl = URL.createObjectURL(vttBlob)
+
+  // 设置 track src
+  if (trackRef.value) {
+    trackRef.value.src = vttUrl
+  }
+})
+
 onMounted(() => {
   if (videoRef.value) {
     videoRef.value.addEventListener('loadedmetadata', () => {
@@ -43,13 +74,10 @@ onMounted(() => {
 
 onUnmounted(() => {
   pause()
-})
-
-const handleTimeUpdate = () => {
-  if (!isSeeking.value && videoRef.value) {
-    currentTime.value = videoRef.value.currentTime
+  if (videoRef.value) {
+    videoRef.value.removeEventListener('loadedmetadata', () => {})
   }
-}
+})
 
 const handleSeek = (e: MouseEvent) => {
   if (!videoRef.value || !duration.value) return
@@ -91,7 +119,10 @@ const play = () => {
 
   const animate = (time: number) => {
     currentTime.value = (time - startTime) / 1000
-    if (currentTime.value < conversationData.value[conversationData.value.length - 1].endTime) {
+    if (
+      conversationData.value.length &&
+      currentTime.value < conversationData.value[conversationData.value.length - 1].endTime
+    ) {
       animationFrameId = requestAnimationFrame(animate)
     } else {
       isPlaying.value = false
@@ -107,9 +138,9 @@ const play = () => {
 }
 
 const pause = () => {
-  isPlaying.value = false
   if (videoRef.value) {
     videoRef.value.pause()
+    isPlaying.value = false
   }
   cancelAnimationFrame(animationFrameId)
 }
@@ -130,18 +161,21 @@ const togglePlay = () => {
     <div
       class="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(52,204,133,0.2),rgba(255,255,255,0))]"
     ></div>
+    <!-- 恢复 Stage 组件用于显示头像 -->
     <Stage :active-dialogue="activeDialogue" />
     <!-- 音频播放器和进度条 -->
     <div
       class="absolute left-1/2 -translate-x-1/2 bottom-2 w-full max-w-4xl px-4 flex flex-col items-center z-20"
     >
+      <!-- video 用于字幕显示，尺寸适中 -->
       <video
         ref="videoRef"
-        class="hidden"
+        class="bg-transparent mb-4 w-full h-10"
         src="/audio/eva.mp3"
-        @timeupdate="handleTimeUpdate"
         preload="auto"
-      ></video>
+      >
+        <track ref="trackRef" kind="subtitles" srclang="zh" label="zh" default />
+      </video>
       <!-- 自定义进度条 -->
       <div
         class="w-full h-1 mt-4 bg-gray-300 bg-opacity-40 rounded-full relative cursor-pointer group"
@@ -187,3 +221,14 @@ const togglePlay = () => {
     </div>
   </main>
 </template>
+
+<style scoped>
+.srt,
+video::cue {
+  @apply text-2xl bg-black bg-opacity-10 text-white;
+}
+
+video::cue(b) {
+  color: peachpuff;
+}
+</style>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Avatar from './Avatar.vue'
-import Subtitle from './Subtitle.vue'
+
 import type { Dialogue } from '@/data/conversation'
 import config from '@/data/config.json'
 
@@ -32,6 +32,5 @@ defineProps<{
         :is-speaking="activeDialogue?.role === item.name"
       />
     </div>
-    <Subtitle v-if="activeDialogue" :text="activeDialogue.text" />
   </div>
 </template>
